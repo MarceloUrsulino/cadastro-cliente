@@ -1,3 +1,6 @@
 const express = require('express')
+const app = express()
 
-express.app
+app.use(express.json())  
+
+
