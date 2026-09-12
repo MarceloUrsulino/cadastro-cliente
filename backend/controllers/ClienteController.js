@@ -64,12 +64,12 @@ module.exports = class ClienteController{
             
         }
     }
-    //LISTAR/ GET
+    //FUNÇÃO LISTAR/ GET
     static async listarCliente(req,res){
         const lista = await cliente.findAll()
         res.status(200).json(lista)
     }
-
+    //FUNÇÃO ATUALIZAR
     static async editarCliente(req,res){
         const id = req.params.id
         const checkCliente = await cliente.findByPk(id)
@@ -81,6 +81,18 @@ module.exports = class ClienteController{
 
         await checkCliente.update({nome, email, cep, numero, complemento})
         res.status(200).json({message: 'Cadastro atualizado.'})
+    }
+
+    static async deletarCliente(req,res){
+        const id = req.params.id
+        const check = await cliente.findByPk(id)
+        if(!check){
+            res.status(422).json({message: 'Cadastro não encontrado.'})
+            return
+        }
+
+        await check.destroy()
+        res.status(200).json({message: 'O cadatro foi excluído.'})
     }
 
 }

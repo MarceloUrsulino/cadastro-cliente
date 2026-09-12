@@ -6,6 +6,7 @@ router.post('/cliente/cadastro', ClienteController.ClienteCreate)
 router.get('/listar/cliente', ClienteController.listarCliente)
 
 router.put('/atualizar/cliente/:id', ClienteController.editarCliente)
+router.delete('/excluir/cliente/:id', ClienteController.deletarCliente)
 
 
 module.exports = router
