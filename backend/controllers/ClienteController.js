@@ -1,3 +1,4 @@
+
 const cliente = require('../models/Cliente')
 const axios = require('axios')
 
@@ -11,6 +12,14 @@ module.exports = class ClienteController{
             return
         }
 
+        
+        const emailCheck = await cliente.findOne({where: {email: email}})
+        
+        if(emailCheck){
+            res.status(422).json({message:'O e-mail já existe no cadastro, por favor insira outro e-mail.' })
+            return
+        }
+
         //USANDO REPLACE PARA GUARDAR SOMENTE NUMEROS NA VARIAVEL
         const somenteNumeros = cep.replace(/\D/g, '')
 
@@ -18,6 +27,8 @@ module.exports = class ClienteController{
             res.status(400).json({message: 'Por favor, utilize um cep válido.'})
             return
            }
+
+        
         //USANDO TRY/ CATCH PARA TRATAR ERRO EXTERNO NA API
         try {
 
@@ -50,6 +61,11 @@ module.exports = class ClienteController{
             res.status(400).json({message: 'Cep inválido.'})
             
         }
+    }
+    //LISTAR/ GET
+    static async listarCliente(req,res){
+        const lista = await cliente.findAll()
+        res.status(200).json(lista)
     }
 
 }
