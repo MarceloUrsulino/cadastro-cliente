@@ -1,6 +1,8 @@
 
+const { UPDATE } = require('sequelize/lib/query-types')
 const cliente = require('../models/Cliente')
 const axios = require('axios')
+const { where } = require('sequelize')
 
 module.exports = class ClienteController{
     static async ClienteCreate(req,res){
@@ -66,6 +68,19 @@ module.exports = class ClienteController{
     static async listarCliente(req,res){
         const lista = await cliente.findAll()
         res.status(200).json(lista)
+    }
+
+    static async editarCliente(req,res){
+        const id = req.params.id
+        const checkCliente = await cliente.findByPk(id)
+        if(!checkCliente){
+            res.status(422).json({message: 'Cliente não encontrado.'})
+            return
+        }
+        const { nome, email, cep, numero, complemento } = req.body
+
+        await checkCliente.update({nome, email, cep, numero, complemento})
+        res.status(200).json({message: 'Cadastro atualizado.'})
     }
 
 }
