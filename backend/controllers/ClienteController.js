@@ -1,8 +1,8 @@
 
-const { UPDATE } = require('sequelize/lib/query-types')
+
 const cliente = require('../models/Cliente')
 const axios = require('axios')
-const { where } = require('sequelize')
+
 
 module.exports = class ClienteController{
     static async ClienteCreate(req,res){
