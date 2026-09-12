@@ -11,15 +11,17 @@ module.exports = class ClienteController{
             return
         }
 
+        //USANDO REPLACE PARA GUARDAR SOMENTE NUMEROS NA VARIAVEL
         const somenteNumeros = cep.replace(/\D/g, '')
 
         if(!cep || somenteNumeros.length !== 8){
             res.status(400).json({message: 'Por favor, utilize um cep válido.'})
             return
            }
-        
+        //USANDO TRY/ CATCH PARA TRATAR ERRO EXTERNO NA API
         try {
 
+            //FAZENDO A REQUISIÇÃO EXTERNA PARA BUSCAR OS DADOS DO CEP
             const resposta = await axios.get(`https://viacep.com.br/ws/${somenteNumeros}/json/`)
 
             const dadosCep = resposta.data

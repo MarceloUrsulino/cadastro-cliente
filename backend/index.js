@@ -6,6 +6,8 @@ const db = require('./db/Conn')
 
 app.use(express.json())  
 
+const routes = require('./routes/Routes')
+app.use(routes)
 
 
 
