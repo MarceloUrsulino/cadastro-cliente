@@ -1,5 +1,4 @@
 
-
 const cliente = require('../models/Cliente')
 const axios = require('axios')
 
@@ -8,13 +7,11 @@ module.exports = class ClienteController{
     static async ClienteCreate(req,res){
         const { nome, email, cep, numero, complemento } = req.body
 
-
         if(!nome || !email || !cep || !numero){
             res.status(422).json({message: 'O campo precisa ser preenchido.'})
             return
         }
 
-        
         const emailCheck = await cliente.findOne({where: {email: email}})
         
         if(emailCheck){
@@ -30,7 +27,6 @@ module.exports = class ClienteController{
             return
            }
 
-        
         //USANDO TRY/ CATCH PARA TRATAR ERRO EXTERNO NA API
         try {
 
@@ -83,6 +79,7 @@ module.exports = class ClienteController{
         res.status(200).json({message: 'Cadastro atualizado.'})
     }
 
+    //FUNÇÃO DELETAR
     static async deletarCliente(req,res){
         const id = req.params.id
         const check = await cliente.findByPk(id)
