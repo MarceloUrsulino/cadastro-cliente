@@ -22,7 +22,7 @@ module.exports = class ClienteController{
         //USANDO REPLACE PARA GUARDAR SOMENTE NUMEROS NA VARIAVEL
         const somenteNumeros = cep.replace(/\D/g, '')
 
-        if(!cep || somenteNumeros.length !== 8){
+        if(somenteNumeros.length !== 8){
             res.status(400).json({message: 'Por favor, utilize um cep válido.'})
             return
            }
