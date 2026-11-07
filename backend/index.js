@@ -10,9 +10,6 @@ const routes = require('./routes/Routes')
 app.use(routes)
 
 
-
-
-
 db.sync().then(() => {
 
     console.log('Conectou')
