@@ -89,7 +89,7 @@ module.exports = class ClienteController{
         }
 
         await check.destroy()
-        res.status(200).json({message: 'O cadatro foi excluído.'})
+        res.status(200).json({message: 'O cadastro foi excluído.'})
     }
 
 }
