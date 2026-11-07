@@ -16,7 +16,7 @@ app.use(routes)
 db.sync().then(() => {
 
     console.log('Conectou')
-    app.listen(3000)
+    app.listen(process.env.PORT || 3000)
 
 }).catch(err =>{
 
