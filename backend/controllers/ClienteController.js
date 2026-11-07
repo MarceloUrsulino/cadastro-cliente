@@ -1,10 +1,9 @@
-
 const cliente = require('../models/Cliente')
 const axios = require('axios')
 
-
 module.exports = class ClienteController{
     static async ClienteCreate(req,res){
+    try{
         const { nome, email, cep, numero, complemento } = req.body
 
         if(!nome || !email || !cep || !numero){
@@ -27,6 +26,7 @@ module.exports = class ClienteController{
             return
            }
 
+        let rua, bairro, cidade, estado
         //USANDO TRY/ CATCH PARA TRATAR ERRO EXTERNO NA API
         try {
 
@@ -34,13 +34,24 @@ module.exports = class ClienteController{
             const resposta = await axios.get(`https://viacep.com.br/ws/${somenteNumeros}/json/`)
 
             const dadosCep = resposta.data
-        
-            const rua = dadosCep.logradouro
-            const bairro = dadosCep.bairro
-            const cidade = dadosCep.localidade
-            const estado = dadosCep.uf
 
-            const create = await cliente.create({
+            if(dadosCep.erro){
+                res.status(400).json({message: 'Cep não encontrado.'})
+                return
+            }
+        
+             rua = dadosCep.logradouro
+             bairro = dadosCep.bairro
+             cidade = dadosCep.localidade
+             estado = dadosCep.uf
+
+        }catch(error) {
+  
+            res.status(400).json({message: 'Cep inválido.'})
+            return
+        }
+
+            await cliente.create({
             nome,
             email,
             cep,
@@ -52,21 +63,26 @@ module.exports = class ClienteController{
             estado
         })
         res.status(201).json({message: 'Cadastro criado.'})
-        return
+      
+    }catch(error){
+        console.log(error)
+        res.status(500).json({message: 'Erro ao tentar cadastrar.'})
+    } 
+}  
 
-        } catch (error) {
-
-            res.status(400).json({message: 'Cep inválido.'})
-            
-        }
-    }
     //FUNÇÃO LISTAR/ GET
     static async listarCliente(req,res){
+    try{
         const lista = await cliente.findAll()
         res.status(200).json(lista)
+    }catch(error){
+        console.log(error)
+        res.status(500).json({message: 'Erro ao tentar listar.'})
     }
+}
     //FUNÇÃO ATUALIZAR
     static async editarCliente(req,res){
+    try{
         const id = req.params.id
         const checkCliente = await cliente.findByPk(id)
         if(!checkCliente){
@@ -77,10 +93,15 @@ module.exports = class ClienteController{
 
         await checkCliente.update({nome, email, cep, numero, complemento})
         res.status(200).json({message: 'Cadastro atualizado.'})
+    }catch(error){
+        console.log(error)
+        res.status(500).json({message: 'Erro ao tentar atualizar.'})
     }
+}
 
     //FUNÇÃO DELETAR
     static async deletarCliente(req,res){
+    try{
         const id = req.params.id
         const check = await cliente.findByPk(id)
         if(!check){
@@ -90,6 +111,10 @@ module.exports = class ClienteController{
 
         await check.destroy()
         res.status(200).json({message: 'O cadastro foi excluído.'})
+    }catch(error){
+        console.log(error)
+        res.status(500).json({message: 'Erro ao tentar deletar.'})
     }
+}
 
 }
