@@ -1,4 +1,4 @@
-# Cadastro de Clientes 
+# Cadastro de Clientes - API
 
 API REST para cadastro de clientes com preenchimento automático de endereço a partir do CEP, utilizando a API pública do [ViaCEP](https://viacep.com.br/).
 
